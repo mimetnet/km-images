@@ -35,10 +35,20 @@ func Scrape(url string) {
 		case 0:
 			return
 		case 1:
-			fmt.Printf("Title: '%s'\n", parts[0])
+			d := NewDevice(parts[0])
+			fmt.Printf("'%s' (%s)\n", d, parts)
 			break
 		default:
-			fmt.Printf("Title: '%s'\n", parts)
+			var i = 0
+
+			for i = 0; i < cnt; i++ {
+				if "PRO" != parts[i] && "PRESS" != parts[i] {
+					break
+				}
+			}
+
+			d := NewDevice(parts[i])
+			fmt.Printf("'%s' (%s)\n", d, parts)
 			break
 		}
 

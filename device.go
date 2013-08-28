@@ -18,15 +18,12 @@ func NewDevice(name string) *Device {
 	d.Color = false
 
 	if 'C' == name[0] {
+		name = strings.TrimLeft(name, "C")
+
+		d.Name = name
 		d.Color = true
 
-		name = strings.TrimLeft(name, "C")
-		d.Name = name
-
-		if strings.HasSuffix(name, "hc") {
-			name = strings.Replace(name, "hc", "00", 1)
-		} else if strings.HasSuffix(name, "L") {
-			name = strings.Replace(name, "L", "", 1)
+		if strings.HasSuffix(name, "L") {
 			d.Pro = true
 		}
 	} else {

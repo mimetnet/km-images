@@ -46,11 +46,11 @@ func NewDevice(name string) *Device {
 func (d *Device) String() string {
 	if d.Color {
 		if d.Pro {
-			return fmt.Sprintf("Pro C%s", d.Name)
+			return fmt.Sprintf("Pro c%s", d.Name)
 		} else if d.Press {
-			return fmt.Sprintf("Press C%s", d.Name)
+			return fmt.Sprintf("Press c%s", d.Name)
 		} else {
-			return fmt.Sprintf("C%s", d.Name)
+			return fmt.Sprintf("c%s", d.Name)
 		}
 	}
 

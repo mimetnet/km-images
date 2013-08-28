@@ -6,35 +6,30 @@ import (
 	"strings"
 )
 
-func Scrape(url string) {
-	// Load the HTML document (in real use, the type would be *goquery.Document)
-	var doc *goquery.Document
-	var e error
+func MapSelection(i int, s *goquery.Selection) string {
+	var title string
 
-	if doc, e = goquery.NewDocument(url); e != nil {
-		panic(e.Error())
+	// For each item found, get the band, title and score, and print it
+	if title = s.Text(); "" == title || !strings.HasPrefix(title, "bizhub ") {
+		return ""
 	}
 
-	doc.Find("h2.headingTypeB01 a").Each(func(i int, s *goquery.Selection) {
-		var cnt int
-		var title string
-		var parts []string
+	return strings.TrimPrefix(title, "bizhub ")
+}
 
-		// For each item found, get the band, title and score, and print it
-		if title = s.Text(); "" == title || !strings.HasPrefix(title, "bizhub ") {
-			return
-		}
+func ConvertTitle(title string) <-chan string {
+	parts := strings.Split(title, " ")
+	cnt := len(parts)
+	ret := make(chan string)
 
-		title = strings.TrimPrefix(title, "bizhub ")
-		parts = strings.Split(title, " ")
-		cnt = len(parts)
-
+	go func() {
 		switch cnt {
 		case 0:
-			return
+			break
 		case 1:
-			d := NewDevice(parts[0])
-			fmt.Println(d)
+			//d := NewDevice(parts[0])
+			//fmt.Println(d)
+			ret <- parts[0]
 			break
 		default:
 			var i = 0
@@ -47,14 +42,38 @@ func Scrape(url string) {
 
 			for ; i < cnt; i++ {
 				if "P" != parts[i] && "DS" != parts[i] {
-					d := NewDevice(parts[i])
-					fmt.Println(d)
+					//d := NewDevice(parts[i])
+					//fmt.Println(d)
+					ret <- parts[i]
 				}
 			}
 			break
 		}
 
-	})
+		close(ret)
+	}()
+
+	return ret
+}
+
+func Scrape(url string) {
+	var e error
+	var doc *goquery.Document
+
+	if doc, e = goquery.NewDocument(url); e != nil {
+		panic(e.Error())
+	}
+
+	titles := doc.Find("h2.headingTypeB01 a").Map(MapSelection)
+	//devices := make([]Device, len(titles))
+
+	for _, title := range titles {
+		if "" != title {
+			for val := range ConvertTitle(title) {
+				fmt.Println(NewDevice(val))
+			}
+		}
+	}
 }
 
 func main() {

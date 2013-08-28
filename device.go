@@ -25,6 +25,8 @@ func NewDevice(name string) *Device {
 
 		if strings.HasSuffix(name, "L") {
 			d.Pro = true
+		} else if strings.HasSuffix(name, "hc") {
+			d.Press = true
 		}
 	} else {
 		d.Name = name

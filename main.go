@@ -21,9 +21,7 @@ func Scrape(url string) {
 		var parts []string
 
 		// For each item found, get the band, title and score, and print it
-		title = s.Text()
-
-		if "" == title || true != strings.HasPrefix(title, "bizhub ") {
+		if title = s.Text(); "" == title || !strings.HasPrefix(title, "bizhub ") {
 			return
 		}
 

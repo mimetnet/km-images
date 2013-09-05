@@ -17,8 +17,8 @@ func NewDevice(name string) *Device {
 	d := new(Device)
 	d.Color = false
 
-	if 'C' == name[0] {
-		name = strings.TrimLeft(name, "C")
+	if 'C' == name[0] || 'c' == name[0] {
+		name = name[1:len(name)]
 
 		d.Name = name
 		d.Color = true

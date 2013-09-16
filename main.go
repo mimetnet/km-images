@@ -108,10 +108,16 @@ func main() {
 	if *black || *pro || *press {
 		go Scrape("http://www.konicaminolta-images.eu/images/list/category/Production%20Printing%20Systems__Production%20Printing%20Black%20and%20White/?tx_kmmediapool_pi1[itemsperpage]=1000", outChan, doneChan)
 		cnt++
+
+		go Scrape("http://www.konicaminolta-images.eu/images/list/category/Production%20Printing%20Systems__Production%20Printing%20Black%20and%20White__Discontinued%20Products//?tx_kmmediapool_pi1[itemsperpage]=1000", outChan, doneChan)
+		cnt++
 	}
 
 	if *color || *pro || *press {
 		go Scrape("http://www.konicaminolta-images.eu/images/list/category/Production%20Printing%20Systems__Production%20Printing%20Colour/?tx_kmmediapool_pi1[itemsperpage]=1000", outChan, doneChan)
+		cnt++
+
+		go Scrape("http://www.konicaminolta-images.eu/images/list/category/Production%20Printing%20Systems__Production%20Printing%20Colour__Discontinued%20Products/?tx_kmmediapool_pi1[itemsperpage]=1000", outChan, doneChan)
 		cnt++
 	}
 
